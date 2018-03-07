@@ -43,6 +43,7 @@
         src/Application.vala
         src/MainWindow.vala
         src/widgets/CellsDrawer.vala
+        src/widgets/HeaderBar.vala
 
     # tell what libraries to use when compiling
     PACKAGES

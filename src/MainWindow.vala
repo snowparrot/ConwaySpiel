@@ -1,7 +1,8 @@
 namespace ConwaySpiel{
 public class MainWindow: Gtk.ApplicationWindow {
 
-    private ConwaySpiel.CellsDrawer CellsDrawer;
+    private ConwaySpiel.CellsDrawer cellsdrawer;
+    private ConwaySpiel.HeaderBar headerbar;
 
 
 
@@ -18,8 +19,11 @@ public class MainWindow: Gtk.ApplicationWindow {
         default_width = 500;
         title = "";
 
-        CellsDrawer = new ConwaySpiel.CellsDrawer (2, 2);
-        add (CellsDrawer);
+        cellsdrawer = new ConwaySpiel.CellsDrawer (2, 2);
+        headerbar = new ConwaySpiel.HeaderBar ();
+        add (cellsdrawer);
+        set_titlebar (headerbar);
+        
         
         // natuerlich ueberarbeiten
         states = new bool [2,2];
@@ -27,7 +31,7 @@ public class MainWindow: Gtk.ApplicationWindow {
         states[0,1] = true;
         states[1,0] = false;
         states[1,1] = true;
-        CellsDrawer.change_cells (states);        
+        cellsdrawer.change_cells (states);        
 
     }
 
