@@ -41,6 +41,7 @@
     include(ValaPrecompile)
     vala_precompile(VALA_C ${EXEC_NAME}
         src/Application.vala
+        src/MainWindow.vala
         src/widgets/CellsDrawer.vala
 
     # tell what libraries to use when compiling
