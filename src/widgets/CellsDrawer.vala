@@ -16,6 +16,7 @@ public class CellsDrawer: Gtk.DrawingArea {
     private Gdk.RGBA grid_colour;
     private double margin_factor; // part of cells drawer size where we wont draw
     private double line_width;
+    private double line_no_margin_factor; // part, where lines are in the margin area
     
     private int scaling_factor; // for hdpi
     
@@ -52,14 +53,15 @@ public class CellsDrawer: Gtk.DrawingArea {
         
         scaling_factor = 1;
         margin_factor = 0.1;
+        line_no_margin_factor = 0.05;
         state_array = new bool [x_cells, y_cells];
         
         draw.connect (on_draw_event);
     }
     
     private bool on_draw_event (Cairo.Context context) {
-        int margin_y = (int) Math.floor((this.get_allocated_height () * margin_factor));
-	    int margin_x = (int) Math.floor((this.get_allocated_width () * margin_factor));
+        int margin_y = (int) Math.floor(this.get_allocated_height () * margin_factor);
+	    int margin_x = (int) Math.floor(this.get_allocated_width () * margin_factor);
 	    
         // draw the cells
         Gdk.cairo_set_source_rgba (context, cell_colour);
@@ -74,19 +76,46 @@ public class CellsDrawer: Gtk.DrawingArea {
         context.fill ();
         
 
-        // TODO: Gitter malen
-        // TODO: Auf Git hochladen
-        Gdk.cairo_set_source_rgba (context, grid_colour);
-        context.set_line_width (3);
-        context.move_to (30, 50);
-        context.line_to (70, 100);
-        
-        context.stroke ();
-
+        draw_lines (context);
 
 
         return true;
     }
+
+    private void draw_lines (Cairo.Context context) {
+        // we want to have a mesh effect. That's why we have margin_y/x, which so lines start more left / more above
+        int margin_y_lmf = (int) Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
+	    int margin_x_lmf = (int) Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
+
+        int margin_y = (int) Math.floor(this.get_allocated_height () * margin_factor);
+	    int margin_x = (int) Math.floor(this.get_allocated_width () * margin_factor);
+        
+        int end_margin_y = (int) Math.floor(this.get_allocated_height () * line_no_margin_factor);
+        int end_margin_x = (int) Math.floor(this.get_allocated_width () * line_no_margin_factor);
+
+        Gdk.cairo_set_source_rgba (context, grid_colour);
+        context.set_line_width (line_width);
+
+        /* principle for verticle lines
+        We have x_cells + 1 vertical lines. There are one line left of a cell and the last one right of. starts like the cells with margin_x
+        on y axes we start above the cells (margin_y_lmf) for meshing effect, Then add the height of all cells
+        one end_margin_y is filling the rest of margin_y_lmf (margin_y_lmf + end_margin_y = margin_y) and another one for meshing effect again.
+        */
+        for (int i = 0; i < x_cells + 1; i++) {
+            context.move_to (margin_x + i * cell_width, margin_y_lmf);
+            context.line_to (margin_x + i * cell_width, margin_y_lmf + y_cells * cell_height + 2 * end_margin_y);    
+        }
+
+        for (int j = 0; j < y_cells + 1; j++) {
+            context.move_to (margin_x_lmf, margin_y + j * cell_height);
+            context.line_to (margin_x_lmf + x_cells * cell_width + 2 * end_margin_x , margin_y + j * cell_height);    
+        }
+        
+        context.stroke ();
+        
+
+    }
+
     
     public void change_cells (bool [,] new_cells) {
         if (new_cells.length[0] != x_cells && new_cells.length[1] != y_cells) {
