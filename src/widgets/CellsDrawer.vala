@@ -60,8 +60,9 @@ public class CellsDrawer: Gtk.DrawingArea {
     }
     
     private bool on_draw_event (Cairo.Context context) {
-        int margin_y = (int) Math.floor(this.get_allocated_height () * margin_factor);
-	    int margin_x = (int) Math.floor(this.get_allocated_width () * margin_factor);
+        float margin_y = (float) Math.floor(this.get_allocated_height () * margin_factor);
+	    float margin_x = (float) Math.floor(this.get_allocated_width () * margin_factor);
+	    int margin = (int) Math.fminf (margin_x, margin_y);// both sides have the same margin
 	    
         // draw the cells
         Gdk.cairo_set_source_rgba (context, cell_colour);
@@ -69,7 +70,7 @@ public class CellsDrawer: Gtk.DrawingArea {
 	        for (int j = 0; j < y_cells; j++) {
                 if (state_array [i, j])
                 {
-                    context.rectangle (margin_x + i * cell_width, margin_y + j * cell_height, cell_width, cell_height);
+                    context.rectangle (margin + i * cell_width, margin + j * cell_height, cell_width, cell_height);
                 }
 	        }
 	    }

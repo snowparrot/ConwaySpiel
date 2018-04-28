@@ -26,9 +26,9 @@ public class MainWindow: Gtk.ApplicationWindow {
         
         
         // natuerlich ueberarbeiten
-        states = new bool [2,2];
-        states[0,0] = false;
-        states[0,1] = true;
+        states = new bool [3,3];
+        states[0,0] = true;
+        states[0,1] = false;
         states[1,0] = false;
         states[1,1] = true;
         cellsdrawer.change_cells (states);        
