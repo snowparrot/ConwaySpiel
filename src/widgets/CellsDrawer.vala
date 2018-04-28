@@ -86,16 +86,16 @@ public class CellsDrawer: Gtk.DrawingArea {
 
         // bereichnung auslagern
         // we want to have a mesh effect. That's why we have margin_y/x, which so lines start more left / more above
-        float margin_y_lmf =  Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
-	    float margin_x_lmf =  Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
+        float margin_y_lmf = (float) Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
+	    float margin_x_lmf = (float) Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
         int margin_lmf = (int) Math.fminf (margin_x_lmf, margin_y_lmf);// both sides have the same margin
         
-        float margin_y = Math.floor(this.get_allocated_height () * margin_factor);
-	    float margin_x = Math.floor(this.get_allocated_width () * margin_factor);
+        float margin_y = (float) Math.floor(this.get_allocated_height () * margin_factor);
+	    float margin_x = (float) Math.floor(this.get_allocated_width () * margin_factor);
         int margin = (int) Math.fminf (margin_x, margin_y);// both sides have the same margin
         
-        float end_margin_y = Math.floor(this.get_allocated_height () * line_no_margin_factor);
-        float end_margin_x = Math.floor(this.get_allocated_width () * line_no_margin_factor);
+        float end_margin_y = (float) Math.floor(this.get_allocated_height () * line_no_margin_factor);
+        float end_margin_x = (float) Math.floor(this.get_allocated_width () * line_no_margin_factor);
         int end_margin = (int) Math.fminf (end_margin_x, end_margin_y);// both sides have the same margin
 
         Gdk.cairo_set_source_rgba (context, grid_colour);
