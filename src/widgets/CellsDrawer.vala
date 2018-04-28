@@ -1,4 +1,5 @@
 using GLib.Math;
+// TODO: Scrollable implementieren
 namespace ConwaySpiel {
 public class CellsDrawer: Gtk.DrawingArea {
 
@@ -124,10 +125,13 @@ public class CellsDrawer: Gtk.DrawingArea {
 
     
     public void change_cells (bool [,] new_cells) {
-        if (new_cells.length[0] != x_cells && new_cells.length[1] != y_cells) {
-            return;   
-        }
+        x_cells = new_cells.length[0];
+        y_cells = new_cells.length[1];
+        
         state_array = new_cells;
+        
+        
+
     }
 }
 }

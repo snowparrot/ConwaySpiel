@@ -21,8 +21,17 @@ public class MainWindow: Gtk.ApplicationWindow {
 
         cellsdrawer = new ConwaySpiel.CellsDrawer (3, 3);
         headerbar = new ConwaySpiel.HeaderBar ();
-        add (cellsdrawer);
         set_titlebar (headerbar);
+        
+        headerbar.clicked_new_mesh.connect (new_cells);
+        
+        
+        var scrolledWindow = new Gtk.ScrolledWindow (null, null);
+        var viewport = new Gtk.Viewport (null, null);
+        viewport.set_size_request (200, 200);
+        viewport.add (cellsdrawer);
+        scrolledWindow.add (viewport);
+        add (scrolledWindow);
         
         
         // natuerlich ueberarbeiten
@@ -32,7 +41,14 @@ public class MainWindow: Gtk.ApplicationWindow {
         states[1,0] = false;
         states[1,1] = true;
         cellsdrawer.change_cells (states);        
-
+    }
+    
+    private void new_cells (int height, int width) {
+                   
+        states = new bool[height, width];
+        states[0, 1] = true;
+        cellsdrawer.change_cells (states);
+        cellsdrawer.queue_draw ();
     }
 
 }
