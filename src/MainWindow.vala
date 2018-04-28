@@ -19,7 +19,7 @@ public class MainWindow: Gtk.ApplicationWindow {
         default_width = 500;
         title = "";
 
-        cellsdrawer = new ConwaySpiel.CellsDrawer (2, 2);
+        cellsdrawer = new ConwaySpiel.CellsDrawer (3, 3);
         headerbar = new ConwaySpiel.HeaderBar ();
         add (cellsdrawer);
         set_titlebar (headerbar);

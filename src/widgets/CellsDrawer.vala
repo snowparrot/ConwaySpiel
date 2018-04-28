@@ -83,15 +83,20 @@ public class CellsDrawer: Gtk.DrawingArea {
     }
 
     private void draw_lines (Cairo.Context context) {
-        // we want to have a mesh effect. That's why we have margin_y/x, which so lines start more left / more above
-        int margin_y_lmf = (int) Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
-	    int margin_x_lmf = (int) Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
 
-        int margin_y = (int) Math.floor(this.get_allocated_height () * margin_factor);
-	    int margin_x = (int) Math.floor(this.get_allocated_width () * margin_factor);
+        // bereichnung auslagern
+        // we want to have a mesh effect. That's why we have margin_y/x, which so lines start more left / more above
+        float margin_y_lmf =  Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
+	    float margin_x_lmf =  Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
+        int margin_lmf = (int) Math.fminf (margin_x_lmf, margin_y_lmf);// both sides have the same margin
         
-        int end_margin_y = (int) Math.floor(this.get_allocated_height () * line_no_margin_factor);
-        int end_margin_x = (int) Math.floor(this.get_allocated_width () * line_no_margin_factor);
+        float margin_y = Math.floor(this.get_allocated_height () * margin_factor);
+	    float margin_x = Math.floor(this.get_allocated_width () * margin_factor);
+        int margin = (int) Math.fminf (margin_x, margin_y);// both sides have the same margin
+        
+        float end_margin_y = Math.floor(this.get_allocated_height () * line_no_margin_factor);
+        float end_margin_x = Math.floor(this.get_allocated_width () * line_no_margin_factor);
+        int end_margin = (int) Math.fminf (end_margin_x, end_margin_y);// both sides have the same margin
 
         Gdk.cairo_set_source_rgba (context, grid_colour);
         context.set_line_width (line_width);
@@ -102,13 +107,13 @@ public class CellsDrawer: Gtk.DrawingArea {
         one end_margin_y is filling the rest of margin_y_lmf (margin_y_lmf + end_margin_y = margin_y) and another one for meshing effect again.
         */
         for (int i = 0; i < x_cells + 1; i++) {
-            context.move_to (margin_x + i * cell_width, margin_y_lmf);
-            context.line_to (margin_x + i * cell_width, margin_y_lmf + y_cells * cell_height + 2 * end_margin_y);    
+            context.move_to (margin + i * cell_width, margin_lmf);
+            context.line_to (margin + i * cell_width, margin_lmf + y_cells * cell_height + 2 * end_margin);    
         }
 
         for (int j = 0; j < y_cells + 1; j++) {
-            context.move_to (margin_x_lmf, margin_y + j * cell_height);
-            context.line_to (margin_x_lmf + x_cells * cell_width + 2 * end_margin_x , margin_y + j * cell_height);    
+            context.move_to (margin_lmf, margin + j * cell_height);
+            context.line_to (margin_lmf + x_cells * cell_width + 2 * end_margin , margin + j * cell_height);    
         }
         
         context.stroke ();
