@@ -6,8 +6,7 @@ public class CellsDrawer: Gtk.DrawingArea {
     private int x_cells;
     private int y_cells;
     
-    private bool cells_not_drawn; // shows if CellsDrawer is too small to draw all Cells
-    
+        
     private int cell_width;
     private int cell_height;
     
@@ -22,6 +21,8 @@ public class CellsDrawer: Gtk.DrawingArea {
     private int scaling_factor; // for hdpi
     
     private bool[,] state_array;
+
+    public signal void on_clicked_cell (int cell_x, int cell_y); 
     
     public CellsDrawer (int x_cells, int y_cells) {
         Object();
@@ -33,7 +34,6 @@ public class CellsDrawer: Gtk.DrawingArea {
     }
     
     construct {
-        cells_not_drawn = false;
         show_grid = false;
     
         // spater in design.vala auslagern!
@@ -59,6 +59,7 @@ public class CellsDrawer: Gtk.DrawingArea {
         state_array = new bool [x_cells, y_cells];
         
         draw.connect (on_draw_event);
+        button_release_event.connect (on_button_release_event) ;
     }
     
     private bool on_draw_event (Cairo.Context context) {
@@ -78,16 +79,14 @@ public class CellsDrawer: Gtk.DrawingArea {
 	    }
         context.fill ();
         
-
         draw_lines (context);
-
 
         return true;
     }
 
     private void draw_lines (Cairo.Context context) {
 
-        // bereichnung auslagern
+       // bereichnung auslagern
         // we want to have a mesh effect. That's why we have margin_y/x, which so lines start more left / more above
         float margin_y_lmf = (float) Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
 	    float margin_x_lmf = (float) Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
@@ -119,7 +118,7 @@ public class CellsDrawer: Gtk.DrawingArea {
             context.line_to (margin_lmf + x_cells * cell_width + 2 * end_margin , margin + j * cell_height);    
         }
         
-        context.stroke ();
+context.stroke ();
         
         // calculate size so widget how big mesh is
         set_size_request (margin + end_margin + cell_width * x_cells, margin + end_margin + cell_height * y_cells);
@@ -132,7 +131,11 @@ public class CellsDrawer: Gtk.DrawingArea {
         
         state_array = new_cells;
         
-        
+    }
+
+    private bool on_button_release_event (Gdk.EventButton event) {
+
+        return true;
     }
 }
 }

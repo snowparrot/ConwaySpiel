@@ -33,7 +33,7 @@ public class MainWindow: Gtk.ApplicationWindow {
         add (scrolledWindow);
      
         // natuerlich ueberarbeiten
-        states = new bool [3,3];
+        states = new bool [100,100];
         states[0,0] = true;
         states[0,1] = false;
         states[1,0] = false;
