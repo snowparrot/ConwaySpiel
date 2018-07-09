@@ -29,7 +29,7 @@ public class CellsDrawer: Gtk.DrawingArea {
         this.y_cells = y_cells;
         
         state_array = new bool [x_cells, y_cells];
-        set_size_request((x_cells + 3)*cell_width, (y_cells + 3)*cell_height);
+        
     }
     
     construct {
@@ -121,7 +121,8 @@ public class CellsDrawer: Gtk.DrawingArea {
         
         context.stroke ();
         
-
+        // calculate size so widget how big mesh is
+        set_size_request (margin + end_margin + cell_width * x_cells, margin + end_margin + cell_height * y_cells);
     }
 
     
@@ -131,8 +132,7 @@ public class CellsDrawer: Gtk.DrawingArea {
         
         state_array = new_cells;
         
-        set_size_request((x_cells + 3)*cell_width, (y_cells + 3)*cell_height);
-
+        
     }
 }
 }
