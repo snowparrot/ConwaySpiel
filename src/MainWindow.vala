@@ -27,13 +27,11 @@ public class MainWindow: Gtk.ApplicationWindow {
         
         
         var scrolledWindow = new Gtk.ScrolledWindow (null, null);
-        var viewport = new Gtk.Viewport (null, null);
-        viewport.set_size_request (200, 200);
-        viewport.add (cellsdrawer);
-        scrolledWindow.add (viewport);
+        scrolledWindow.expand = true;
+	    scrolledWindow.add_with_viewport (cellsdrawer);   
+
         add (scrolledWindow);
-        
-        
+     
         // natuerlich ueberarbeiten
         states = new bool [3,3];
         states[0,0] = true;
