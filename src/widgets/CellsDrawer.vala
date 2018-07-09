@@ -54,8 +54,8 @@ public class CellsDrawer: Gtk.DrawingArea {
         );
         
         scaling_factor = 1;
-        margin_factor = 0.1;
-        line_no_margin_factor = 0.05;
+        margin_factor = 0.1f;
+        line_no_margin_factor = 0.05f;
         state_array = new bool [x_cells, y_cells];
         
         draw.connect (on_draw_event);
@@ -65,7 +65,7 @@ public class CellsDrawer: Gtk.DrawingArea {
     private bool on_draw_event (Cairo.Context context) {
         float margin_y = (float) Math.floor(this.get_allocated_height () * margin_factor);
 	    float margin_x = (float) Math.floor(this.get_allocated_width () * margin_factor);
-	    int margin = (int) Math.fminf (margin_x, margin_y);// both sides have the same margin
+	    int margin = (int) 3fmin (margin_x, margin_y, (float) (300.0f * margin_factor));// both sides have the same margin
 	    
         // draw the cells
         Gdk.cairo_set_source_rgba (context, cell_colour);
@@ -90,15 +90,15 @@ public class CellsDrawer: Gtk.DrawingArea {
         // we want to have a mesh effect. That's why we have margin_y/x, which so lines start more left / more above
         float margin_y_lmf = (float) Math.floor(this.get_allocated_height () * (margin_factor - line_no_margin_factor));
 	    float margin_x_lmf = (float) Math.floor(this.get_allocated_width () * (margin_factor - line_no_margin_factor));
-        int margin_lmf = (int) Math.fminf (margin_x_lmf, margin_y_lmf);// both sides have the same margin
+        int margin_lmf = (int)  3fmin (margin_x_lmf, margin_y_lmf, (float) (300.0f * (margin_factor - line_no_margin_factor)));// both sides have the same margin
         
         float margin_y = (float) Math.floor(this.get_allocated_height () * margin_factor);
 	    float margin_x = (float) Math.floor(this.get_allocated_width () * margin_factor);
-        int margin = (int) Math.fminf (margin_x, margin_y);// both sides have the same margin
+        int margin = (int) 3fmin (margin_x, margin_y, (float) (300.0f * margin_factor) );// both sides have the same margin
         
         float end_margin_y = (float) Math.floor(this.get_allocated_height () * line_no_margin_factor);
         float end_margin_x = (float) Math.floor(this.get_allocated_width () * line_no_margin_factor);
-        int end_margin = (int) Math.fminf (end_margin_x, end_margin_y);// both sides have the same margin
+        int end_margin = (int) 3fmin (end_margin_x, end_margin_y, (float) (300.0f * line_no_margin_factor));// both sides have the same margin
 
         Gdk.cairo_set_source_rgba (context, grid_colour);
         context.set_line_width (line_width);
@@ -120,8 +120,8 @@ public class CellsDrawer: Gtk.DrawingArea {
         
 context.stroke ();
         
-        // calculate size so widget how big mesh is
-        set_size_request (margin + end_margin + cell_width * x_cells, margin + end_margin + cell_height * y_cells);
+        // calculate size so widget knows how big mesh is. twice margin for both ends in each axes
+        set_size_request (2 * margin + cell_width * x_cells, 2 * margin + cell_height * y_cells);
     }
 
     
@@ -134,8 +134,11 @@ context.stroke ();
     }
 
     private bool on_button_release_event (Gdk.EventButton event) {
-
         return true;
+    }
+
+    private float 3fmin (float a, float b, float c) {
+        return Math.fminf (Math.fminf (a, b), c);
     }
 }
 }
