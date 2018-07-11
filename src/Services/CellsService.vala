@@ -12,6 +12,8 @@ interface CellsService {
 
     public abstract void calculate ();
 
+    public abstract int get_width ();
+    public abstract int get_height ();
 
 }
 }
