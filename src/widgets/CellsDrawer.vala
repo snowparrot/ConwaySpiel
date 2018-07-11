@@ -134,7 +134,7 @@ context.stroke ();
     }
 
     private bool on_button_release_event (Gdk.EventButton event) {
-        // Other way around on the formular to calculate back
+        // Other way around on the formular to calculate rectangle position
         double x = (event.x - margin) / cell_width - 1;
         double y = (event.y - margin) / cell_height - 1;
 
