@@ -38,7 +38,13 @@ public class MainWindow: Gtk.ApplicationWindow {
         states[0,1] = false;
         states[1,0] = false;
         states[1,1] = true;
-        cellsdrawer.change_cells (states);        
+        cellsdrawer.change_cells (states);  
+
+        cellsdrawer.on_clicked_cell.connect ((s, x, y) => {
+            states[x,y] = !states[x,y];
+            cellsdrawer.change_cells (states);  
+            cellsdrawer.queue_draw ();
+        });      
     }
     
     private void new_cells (int height, int width) {

@@ -41,8 +41,8 @@ public class CellsDrawer: Gtk.DrawingArea {
         grid_colour.parse("#0000FF");
         line_width = 3; 
         
-        cell_width = 50; //verbessern
-        cell_height = 50; //#verbessern
+        cell_width = 30; //verbessern
+        cell_height = 30; //#verbessern
     
         this.add_events (
             Gdk.EventMask.BUTTON_PRESS_MASK|
@@ -134,6 +134,12 @@ context.stroke ();
     }
 
     private bool on_button_release_event (Gdk.EventButton event) {
+        // Other way around on the formular to calculate back
+        double x = (event.x - margin) / cell_width - 1;
+        double y = (event.y - margin) / cell_height - 1;
+
+        on_clicked_cell ((int) x, (int) y);
+                      
         return true;
     }
 
