@@ -6,7 +6,7 @@ public class MainWindow: Gtk.ApplicationWindow {
 
 
 
-    private bool [,] states;
+    private CellsService cells;
 
 
     public MainWindow (Gtk.Application application) {
@@ -32,11 +32,7 @@ public class MainWindow: Gtk.ApplicationWindow {
         add (scrolledWindow);
      
         // natuerlich ueberarbeiten
-        states = new bool [20,20];
-        states[0,0] = true;
-        states[0,1] = false;
-        states[1,0] = false;
-        states[1,1] = true;
+        cells = new ArrayCells (20, 20);
         cellsdrawer.change_cells (states);  
 
         cellsdrawer.on_clicked_cell.connect ((s, x, y) => {
@@ -48,8 +44,7 @@ public class MainWindow: Gtk.ApplicationWindow {
     
     private void new_cells (int height, int width) {
                    
-        states = new bool[height, width];
-        states[0, 1] = true;
+        cells = new ArrayCells (width, height);
         cellsdrawer.change_cells (states);
         cellsdrawer.queue_draw ();
     }

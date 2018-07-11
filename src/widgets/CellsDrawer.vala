@@ -125,10 +125,11 @@ context.stroke ();
     }
 
     
-    public void change_cells (bool [,] new_cells) {
-        x_cells = new_cells.length[0];
-        y_cells = new_cells.length[1];
+    public void change_cells (CellsService cells) {
+        x_cells = cells.get_height;
+        y_cells = cells.get_width;
         
+        // TODO: Hier auf CellsService umstellen
         state_array = new_cells;
         
     }
