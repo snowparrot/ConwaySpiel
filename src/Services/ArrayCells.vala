@@ -1,0 +1,7 @@
+namespace ConwaySpiel{
+class ArrayCells {
+
+
+
+}
+}

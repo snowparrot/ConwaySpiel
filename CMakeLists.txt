@@ -45,6 +45,7 @@
         src/widgets/CellsDrawer.vala
         src/widgets/HeaderBar.vala
         src/Services/CellsService.vala
+        src/Services/ArrayCells.vala
 
     # tell what libraries to use when compiling
     PACKAGES
