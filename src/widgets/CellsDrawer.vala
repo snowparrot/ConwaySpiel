@@ -128,8 +128,7 @@ context.stroke ();
     public void change_cells (CellsService cells) {
         x_cells = cells.get_height ();
         y_cells = cells.get_width ();
-        
-        // TODO: Hier auf CellsService umstellen
+       
         for (int x = 0; x < cells.get_height (); x++) {
             for (int y = 0; y < cells.get_width (); y++) {
                 state_array [x, y] = cells.get_cell_state (x, y);
